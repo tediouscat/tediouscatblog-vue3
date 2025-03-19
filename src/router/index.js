@@ -7,7 +7,7 @@ const routes = [
         path: "/",
         component: Index,
         meta: {
-            title: 'tediouscatblog首页'
+            title: 'TediouscatBlog首页'
         }
     },
     // 省略...
@@ -15,7 +15,7 @@ const routes = [
         path: '/login', // 登录页
         component: Login,
         meta: {
-            title: 'TediouscatBlog 登录页'
+            title: 'TediouscatBlog登录页'
         }
     },
 ]
