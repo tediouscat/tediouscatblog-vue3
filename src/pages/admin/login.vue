@@ -2,9 +2,8 @@
   <div class="grid grid-cols-2 h-screen">
     <div class="col-span-2 order-2 p-10 md:col-span-1 md:order-1 bg-slate-900">
       <!-- 指定为 flex 布局，并设置为屏幕垂直水平居中，高度为 100% -->
-      <div class="flex justify-center items-center h-full flex-col animate__animated animate__bounceInLeft animate__fast
-">
-        <h2 class="font-bold text-4xl mb-7 text-white">Weblog 博客登录</h2>
+      <div class="flex justify-center items-center h-full flex-col animate__animated animate__bounceInLeft animate__fast">
+        <h2 class="font-bold text-4xl mb-7 text-white">TediouscatBlog登录</h2>
         <p class="text-white">一款由 Spring Boot + Mybaits Plus + Vue 3.2 + Vite 4 开发的前后端分离博客。</p>
         <!-- 指定图片宽度为父级元素的 1/2 -->
         <img src="@/assets/developer.png" class="w-1/2">
@@ -28,15 +27,15 @@
         <el-form class="w-5/6 md:w-2/5">
           <el-form-item>
             <!-- 输入框组件 -->
-            <el-input size="large" placeholder="请输入用户名" :prefix-icon="User" clearable/>
+            <el-input size="large" v-model="form.username" placeholder="请输入用户名" :prefix-icon="User" clearable />
           </el-form-item>
           <el-form-item>
             <!-- 密码框组件 -->
-            <el-input size="large" type="password" placeholder="请输入用户名" :prefix-icon="Lock" clearable/>
+            <el-input size="large" type="password" v-model="form.password" placeholder="请输入密码" :prefix-icon="Lock" clearable />
           </el-form-item>
           <el-form-item>
             <!-- 登录按钮，宽度设置为 100% -->
-            <el-button class="w-full" size="large" type="primary">登录</el-button>
+            <el-button class="w-full mt-2" size="large" type="primary" @click="onSubmit">登录</el-button>
           </el-form-item>
         </el-form>
 
@@ -48,4 +47,30 @@
 <script setup>
 // 引入 Element Plus 中的用户、锁图标
 import { User, Lock } from '@element-plus/icons-vue'
+
+import { login } from '@/api/admin/user'
+import { reactive } from 'vue'
+import router from "@/router/index.js";
+
+
+// 定义响应式的表单对象
+const form = reactive({
+  username: 'tediouscat',
+  password: 'tediouscat'
+})
+
+// 登录
+const onSubmit = () => {
+  console.log('登录')
+  login(form.username, form.password).then((res) => {
+    console.log(res)
+    // 判断是否成功
+    if (res.data.success == true) {
+      // 跳转到后台首页
+      router.push('/admin/index')
+    }
+  })
+}
+
+
 </script>
