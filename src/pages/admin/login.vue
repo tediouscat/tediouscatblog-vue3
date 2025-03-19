@@ -54,6 +54,7 @@ import {login} from '@/api/admin/user'
 import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 import router from "@/router/index.js";
 import {showMessage} from "@/composables/utils.js";
+import {setToken} from "@/composables/auth.js";
 
 
 const formRef = ref(null)
@@ -102,8 +103,15 @@ const onSubmit = () => {
           console.log(res)
           // 判断是否成功
           if (res.data.success == true) {
+
+            // 存储 Token 到 Cookie 中
+            let token = res.data.data.token
+            setToken(token)
+
             // 提示登录成功
             showMessage('登录成功')
+
+
 
             // 跳转到后台首页
             router.push('/admin/index')
