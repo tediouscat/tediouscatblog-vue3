@@ -2,9 +2,11 @@ import '@/assets/main.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from "@/router/index.js";
+import router from "@/router";
+import '@/permission'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'animate.css';
+
 
 
 
