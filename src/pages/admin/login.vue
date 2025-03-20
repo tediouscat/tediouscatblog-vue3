@@ -102,10 +102,10 @@ const onSubmit = () => {
     login(form.username, form.password).then((res) => {
           console.log(res)
           // 判断是否成功
-          if (res.data.success == true) {
+          if (res.success == true) {
 
             // 存储 Token 到 Cookie 中
-            let token = res.data.data.token
+            let token = res.data.token
             setToken(token)
 
             // 提示登录成功
@@ -117,7 +117,7 @@ const onSubmit = () => {
             router.push('/admin/index')
           } else {
             // 获取服务端返回的错误消息
-            let message = res.data.message
+            let message = res.message
             // 提示消息
             showMessage('error')
           }
