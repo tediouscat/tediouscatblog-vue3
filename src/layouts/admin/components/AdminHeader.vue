@@ -19,7 +19,7 @@ const { isFullscreen, toggle } = useFullscreen()
 
 <template>
   <!-- 通过 flex 指定水平布局 -->
-  <div class="bg-white h-[64px] flex pr-4 border-b border-slate-200">
+  <div class="bg-white h-[64px] flex pr-4 border-b border-slate-100">
     <!-- 左边栏收缩、展开 -->
     <div class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200" @click="handleMenuWidth">
       <el-icon>
@@ -51,7 +51,7 @@ const { isFullscreen, toggle } = useFullscreen()
 
 
 
-      <el-dropdown>
+      <el-dropdown class="flex items-center justify-center">
                 <span class="el-dropdown-link flex items-center justify-center text-gray-700 text-xs">
                     <!-- 头像 Avatar -->
                     <el-avatar class="mr-2" :size="25" src="https://img.quanxiaoha.com/quanxiaoha/f97361c0429d4bb1bc276ab835843065.jpg" />
