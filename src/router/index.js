@@ -5,7 +5,7 @@ import AdminIndex from "@/pages/admin/index.vue"
 import Admin from "@/layouts/admin/admin.vue";
 import AdminCategoryList from "@/pages/admin/category-list.vue"
 import AdminArticleList from "@/pages/admin/article-list.vue"
-import AdminTagList from "@/layouts/admin/components/AdminTagList.vue";
+import AdminTagList from "@/pages/admin/tag-list.vue";
 import AdminBlogSetting from "@/pages/admin/blog-setting.vue"
 
 const routes = [
