@@ -54,7 +54,7 @@ import {login} from '@/api/admin/user'
 import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 import router from "@/router/index.js";
 import {showMessage} from "@/composables/utils.js";
-import {setToken} from "@/composables/auth.js";
+import {setToken} from "@/composables/cookie.js";
 
 
 const formRef = ref(null)
