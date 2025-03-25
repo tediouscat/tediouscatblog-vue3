@@ -3,10 +3,12 @@ import { useMenuStore } from '@/stores/menu'
 // 引入 useFullscreen
 import { useFullscreen } from '@vueuse/core'
 import {Aim, Expand, Fold, FullScreen, Refresh} from "@element-plus/icons-vue";
+import { useUserStore } from '@/stores/user'
 // 引入了菜单 store
 const menuStore = useMenuStore()
 const handleRefresh = () => location.reload()
-
+// 引入了用户 Store
+const userStore = useUserStore()
 // icon 点击事件
 const handleMenuWidth = () => {
   // 动态设置菜单的宽度大小
@@ -54,8 +56,9 @@ const { isFullscreen, toggle } = useFullscreen()
       <el-dropdown class="flex items-center justify-center">
                 <span class="el-dropdown-link flex items-center justify-center text-gray-700 text-xs">
                     <!-- 头像 Avatar -->
-                    <el-avatar class="mr-2" :size="25" src="https://img.quanxiaoha.com/quanxiaoha/f97361c0429d4bb1bc276ab835843065.jpg" />
-                    Admin
+                    <el-avatar class="mr-2" :size="25"
+                               src="https://img.quanxiaoha.com/quanxiaoha/f97361c0429d4bb1bc276ab835843065.jpg" />
+                    {{ userStore.userInfo.username }}
                     <el-icon class="el-icon--right">
                         <arrow-down />
                     </el-icon>

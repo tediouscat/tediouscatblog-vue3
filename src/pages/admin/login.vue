@@ -55,6 +55,8 @@ import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 import router from "@/router/index.js";
 import {showMessage} from "@/composables/utils.js";
 import {setToken} from "@/composables/cookie.js";
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
 
 
 const formRef = ref(null)
@@ -107,6 +109,9 @@ const onSubmit = () => {
             // 存储 Token 到 Cookie 中
             let token = res.data.token
             setToken(token)
+
+            // 获取用户信息，并存储到全局状态中
+            userStore.setUserInfo()
 
             // 提示登录成功
             showMessage('登录成功')
