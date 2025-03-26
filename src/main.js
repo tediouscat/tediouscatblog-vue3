@@ -7,14 +7,14 @@ import '@/permission'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'animate.css';
 import 'nprogress/nprogress.css'
-import { createPinia } from 'pinia'
+// 引入全局状态管理 Pinia
+import pinia from '@/stores'
 
 
 
 
 
 const app = createApp(App)
-const pinia = createPinia()
 app.use(router)
 app.use(pinia)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

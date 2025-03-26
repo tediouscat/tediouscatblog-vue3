@@ -64,7 +64,7 @@ const formRef = ref(null)
 
 // 定义响应式的表单对象
 const form = reactive({
-  username: 'tediouscat',
+  username: 'admin',
   password: 'tediouscat'
 })
 
