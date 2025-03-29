@@ -38,7 +38,7 @@
         <el-table-column prop="createTime" label="创建时间" width="180" />
         <el-table-column label="操作" >
           <template #default="scope">
-            <el-button type="danger" size="small">
+            <el-button type="danger" size="small" @click="deleteCategorySubmit(scope.row)">
               <el-icon class="mr-1">
                 <Delete />
               </el-icon>
@@ -81,11 +81,11 @@
 
 <script setup>
 // 引入所需图标
-import {Search, RefreshRight, Plus} from '@element-plus/icons-vue'
+import {Search, RefreshRight, Plus, Delete} from '@element-plus/icons-vue'
 import { ref, reactive } from 'vue'
 import moment from 'moment'
-import { getCategoryPageList, addCategory } from '@/api/admin/category'
-import { showMessage } from '@/composables/utils'
+import {getCategoryPageList, addCategory, deleteCategory} from '@/api/admin/category'
+import {showMessage, showModel} from '@/composables/utils'
 
 // 分页查询的分类名称
 const searchCategoryName = ref('')
@@ -223,6 +223,26 @@ const onSubmit = () => {
       }
     })
 
+  })
+}
+
+const deleteCategorySubmit = (row) => {
+  console.log(row.id)
+  showModel('是否确定要删除该分类？').then(() => {
+    deleteCategory(row.id).then((res) => {
+      if (res.success == true) {
+        showMessage('删除成功')
+        // 重新请求分页接口，渲染数据
+        getTableData()
+      } else {
+        // 获取服务端返回的错误消息
+        let message = res.message
+        // 提示错误消息
+        showMessage(message, 'error')
+      }
+    })
+  }).catch(() => {
+    console.log('取消了')
   })
 }
 
