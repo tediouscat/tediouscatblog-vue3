@@ -11,7 +11,7 @@
         <div class="ml-3 w-30 mr-5">
           <!-- 日期选择组件（区间选择） -->
           <el-date-picker v-model="pickDate" type="daterange" range-separator="至" start-placeholder="开始时间"
-                          end-placeholder="结束时间" size="default" :shortcuts="shortcuts" @change="datepickerChange"/>
+                          end-placeholder="结束时间" size="default" :shortcuts="shortcuts" @change="datepickerChange" />
         </div>
 
         <el-button type="primary" class="ml-3" :icon="Search" @click="getTableData">查询</el-button>
@@ -22,7 +22,7 @@
     <el-card shadow="never">
       <!-- 写文章按钮 -->
       <div class="mb-5">
-        <el-button type="primary">
+        <el-button type="primary" @click="isArticlePublishEditorShow = true">
           <el-icon class="mr-1">
             <EditPen />
           </el-icon>
@@ -38,7 +38,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="发布时间" width="180" />
-        <el-table-column label="操作" >
+        <el-table-column label="操作">
           <template #default="scope">
             <el-button size="small">
               <el-icon class="mr-1">
@@ -58,22 +58,84 @@
       <!-- 分页 -->
       <div class="mt-10 flex justify-center">
         <el-pagination v-model:current-page="current" v-model:page-size="size" :page-sizes="[10, 20, 50]"
-                       :small="false" :background="true" layout="total, sizes, prev, pager, next, jumper"
-                       :total="total" @size-change="handleSizeChange" @current-change="getTableData" />
+                       :small="false" :background="true" layout="total, sizes, prev, pager, next, jumper" :total="total"
+                       @size-change="handleSizeChange" @current-change="getTableData" />
       </div>
 
     </el-card>
 
+    <!-- 写博客 -->
+    <el-dialog v-model="isArticlePublishEditorShow" :fullscreen="true" :show-close="false">
+      <template #header="{ close, titleId, titleClass }">
+        <!-- 固钉组件，固钉到顶部 -->
+        <el-affix :offset="20" style="width: 100%;">
+          <!-- 指定 flex 布局， 高度为 10， 背景色为白色 -->
+          <div class="flex h-10 bg-white">
+            <!-- 字体加粗 -->
+            <h4 class="font-bold">写文章</h4>
+            <!-- 靠右对齐 -->
+            <div class="ml-auto flex">
+              <el-button @click="isArticlePublishEditorShow = false">取消</el-button>
+              <el-button type="primary">
+                <el-icon class="mr-1">
+                  <Promotion />
+                </el-icon>
+                发布
+              </el-button>
+            </div>
+          </div>
+        </el-affix>
+      </template>
+      <!-- label-position="top" 用于指定 label 元素在上面 -->
+      <el-form :model="form" ref="publishArticleFormRef" label-position="top" size="large" :rules="rules">
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="form.title" autocomplete="off" size="large" maxlength="40" show-word-limit
+                    clearable />
+        </el-form-item>
+        <el-form-item label="内容" prop="content">
+          <!-- Markdown 编辑器 -->
+          <MdEditor v-model="form.content" editorId="publishArticleEditor" />
+        </el-form-item>
+        <el-form-item label="封面" prop="cover">
+          <div class="w-10">
+            <el-upload class="avatar-uploader" action="#" :auto-upload="false" :show-file-list="false">
+              <img v-if="form.cover" :src="form.cover" class="avatar" />
+              <el-icon v-else class="avatar-uploader-icon">
+                <Plus />
+              </el-icon>
+            </el-upload>
+          </div>
+        </el-form-item>
+        <el-form-item label="摘要" prop="summary">
+          <!-- :rows="3" 指定 textarea 默认显示 3 行 -->
+          <el-input v-model="form.summary" :rows="3" type="textarea" placeholder="请输入文章摘要" />
+        </el-form-item>
+        <el-form-item label="分类" prop="categoryId">
+          <el-select v-model="form.categoryId" clearable placeholder="---请选择---" size="large">
 
+          </el-select>
+        </el-form-item>
+        <el-form-item label="标签" prop="tags">
+          <!-- 标签选择 -->
+          <el-select v-model="form.tags" multiple filterable remote reserve-keyword placeholder="---请输入---"
+                     remote-show-suffix allow-create default-first-option
+                     size="large">
+
+          </el-select>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive } from 'vue'
-import {Search, RefreshRight, EditPen} from '@element-plus/icons-vue'
-import moment from 'moment'
+import {Search, RefreshRight, EditPen, Edit} from '@element-plus/icons-vue'
 import { getArticlePageList, deleteArticle } from '@/api/admin/article'
+import moment from 'moment'
 import { showMessage, showModel } from '@/composables/util'
+import { MdEditor } from 'md-editor-v3'
+import 'md-editor-v3/lib/style.css'
 
 // 模糊搜索的文章标题
 const searchArticleTitle = ref('')
@@ -143,12 +205,11 @@ const size = ref(10)
 
 
 // 获取分页数据
-// 获取分页数据
 function getTableData() {
   // 显示表格 loading
   tableLoading.value = true
   // 调用后台分页接口，并传入所需参数
-  getArticlePageList({current: current.value, size: size.value, startDate: startDate.value, endDate: endDate.value, title: searchArticleTitle.value})
+  getArticlePageList({ current: current.value, size: size.value, startDate: startDate.value, endDate: endDate.value, title: searchArticleTitle.value })
       .then((res) => {
         if (res.success == true) {
           tableData.value = res.data
@@ -168,6 +229,7 @@ const handleSizeChange = (chooseSize) => {
   getTableData()
 }
 
+// 删除文章
 const deleteArticleSubmit = (row) => {
   console.log(row)
   showModel('是否确定要删除该文章？').then(() => {
@@ -189,5 +251,48 @@ const deleteArticleSubmit = (row) => {
   })
 }
 
+// 是否显示文章发布对话框
+const isArticlePublishEditorShow = ref(false)
+// 发布文章表单引用
+const publishArticleFormRef = ref(null)
 
+// 表单对象
+const form = reactive({
+  id: null,
+  title: '',
+  content: '请输入内容',
+  cover: '',
+  categoryId: null,
+  tags: [],
+  summary: ""
+})
+
+// 表单校验规则
+const rules = {
+  title: [
+    { required: true, message: '请输入文章标题', trigger: 'blur' },
+    { min: 1, max: 40, message: '文章标题要求大于1个字符，小于40个字符', trigger: 'blur' },
+  ],
+  content: [{ required: true }],
+  cover: [{ required: true }],
+  categoryId: [{ required: true, message: '请选择文章分类', trigger: 'blur' }],
+  tags: [{ required: true, message: '请选择文章标签', trigger: 'blur' }],
+}
 </script>
+
+<style scoped>
+/* 封面图片样式 */
+.avatar-uploader .avatar {
+  width: 200px;
+  height: 100px;
+  display: block;
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 200px;
+  height: 100px;
+  text-align: center;
+}
+</style>
