@@ -76,7 +76,7 @@ import {Search, RefreshRight, Plus, Delete} from '@element-plus/icons-vue'
 import { ref, reactive } from 'vue'
 import moment from 'moment'
 import {getCategoryPageList, addCategory, deleteCategory} from '@/api/admin/category'
-import {showMessage, showModel} from '@/composables/utils'
+import {showMessage, showModel} from '@/composables/util.js'
 import FormDialog from "@/components/FormDialog.vue";
 
 // 分页查询的分类名称

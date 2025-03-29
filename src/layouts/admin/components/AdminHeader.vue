@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router'
 import { useFullscreen } from '@vueuse/core'
 import {Aim, Expand, Fold, FullScreen, Refresh} from "@element-plus/icons-vue";
 import { useUserStore } from '@/stores/user'
-import {showMessage, showModel} from "@/composables/utils.js";
+import {showMessage, showModel} from "@/composables/util.js";
 import { ref, reactive, watch } from 'vue'
 import {updateAdminPassword} from "@/api/admin/user.js";
 

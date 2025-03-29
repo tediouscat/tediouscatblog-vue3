@@ -1,5 +1,5 @@
 import router from '@/router/index'
-import {hidePageLoading, showMessage, showPageLoading} from "@/composables/utils.js";
+import {hidePageLoading, showMessage, showPageLoading} from "@/composables/util.js";
 import {getToken} from "@/composables/cookie.js";
 
 
