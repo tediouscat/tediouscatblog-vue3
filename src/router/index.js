@@ -8,6 +8,7 @@ import AdminArticleList from "@/pages/admin/article-list.vue"
 import AdminTagList from "@/pages/admin/tag-list.vue";
 import AdminBlogSetting from "@/pages/admin/blog-settings.vue"
 import ArchiveList from '@/pages/frontend/archive-list.vue'
+import CategoryList from "@/pages/frontend/category-list.vue";
 
 const routes = [
     {
@@ -73,6 +74,13 @@ const routes = [
         component: ArchiveList,
         meta: { // meta 信息
             title: 'Weblog 归档页'
+        }
+    },
+    {
+        path: '/category/list', // 分类页
+        component: CategoryList,
+        meta: { // meta 信息
+            title: 'Weblog 分类页'
         }
     },
 ]
