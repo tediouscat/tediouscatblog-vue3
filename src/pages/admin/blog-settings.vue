@@ -2,7 +2,7 @@
   <div>
     <!-- 卡片组件， shadow="never" 指定 card 卡片组件没有阴影 -->
     <el-card shadow="never">
-      <el-form :model="form" label-width="160px" :rules="rules">
+      <el-form ref="formRef" :model="form" label-width="160px" :rules="rules">
         <el-form-item label="博客名称" prop="name">
           <el-input v-model="form.name" clearable />
         </el-form-item>
@@ -68,7 +68,7 @@
           <el-input v-model="form.csdnHomepage" clearable placeholder="请输入 CSDN 主页访问的 URL" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">保存</el-button>
+          <el-button type="primary" :loading="btnLoading" @click="onSubmit">保存</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -78,9 +78,9 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { Check, Close } from '@element-plus/icons-vue'
-import { getBlogSettingsDetail } from '@/api/admin/blogsettings'
 import { uploadFile } from '@/api/admin/file'
 import { showMessage } from '@/composables/util'
+import { getBlogSettingsDetail, updateBlogSettings } from '@/api/admin/blogsettings'
 
 // 表单对象
 const form = reactive({
@@ -220,6 +220,39 @@ function initBlogSettings() {
 }
 // 手动调用一下初始化方法
 initBlogSettings()
+
+// 是否显示保存按钮的 loading 状态，默认为 false
+const btnLoading = ref(false)
+
+// 表单引用
+const formRef = ref(null)
+
+// 保存当前博客设置
+const onSubmit = () => {
+  // 先验证 form 表单字段
+  formRef.value.validate((valid) => {
+    if (!valid) {
+      console.log('表单验证不通过')
+      return false
+    }
+
+    // 显示保存按钮 loading
+    btnLoading.value = true
+    updateBlogSettings(form).then((res) => {
+      if (res.success == false) {
+        // 获取服务端返回的错误消息
+        let message = res.message
+        // 提示错误消息
+        showMessage(message, 'error')
+        return
+      }
+
+      // 重新渲染页面中的信息
+      initBlogSettings()
+      showMessage('保存成功')
+    }).finally(() => btnLoading.value = false) // 隐藏保存按钮 loading
+  })
+}
 
 </script>
 
