@@ -2,6 +2,7 @@ import Index from '@/pages/frontend/index.vue'
 import ArchiveList from '@/pages/frontend/archive-list.vue'
 import CategoryList from '@/pages/frontend/category-list.vue'
 import CategoryArticleList from '@/pages/frontend/category-article-list.vue'
+import TagList from '@/pages/frontend/tag-list.vue'
 import Login from '@/pages/admin/login.vue'
 import AdminIndex from '@/pages/admin/index.vue'
 import AdminArticleList from '@/pages/admin/article-list.vue'
@@ -28,10 +29,10 @@ const routes = [
         }
     },
     {
-        path: '/category/list', // 分类页
+        path: '/category/list', // 分类列表页
         component: CategoryList,
         meta: { // meta 信息
-            title: 'Weblog 分类页'
+            title: 'Weblog 分类列表页'
         }
     },
     {
@@ -39,6 +40,13 @@ const routes = [
         component: CategoryArticleList,
         meta: { // meta 信息
             title: 'Weblog 分类文章页'
+        }
+    },
+    {
+        path: '/tag/list', // 标签列表页
+        component: TagList,
+        meta: { // meta 信息
+            title: 'Weblog 标签列表页'
         }
     },
     {
