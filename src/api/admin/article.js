@@ -14,3 +14,14 @@ export function deleteArticle(id) {
 export function publishArticle(data) {
     return axios.post("/admin/article/publish", data)
 }
+
+// 获取文章详情
+export function getArticleDetail(id) {
+    return axios.post("/admin/article/detail", {id})
+}
+
+// 更新文章
+export function updateArticle(data) {
+    return axios.post("/admin/article/update", data)
+}
+
