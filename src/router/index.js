@@ -6,7 +6,7 @@ import Admin from "@/layouts/admin/admin.vue";
 import AdminCategoryList from "@/pages/admin/category-list.vue"
 import AdminArticleList from "@/pages/admin/article-list.vue"
 import AdminTagList from "@/pages/admin/tag-list.vue";
-import AdminBlogSetting from "@/pages/admin/blog-setting.vue"
+import AdminBlogSetting from "@/pages/admin/blog-settings.vue"
 
 const routes = [
     {
